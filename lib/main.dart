@@ -14,13 +14,12 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider(
+    return Provider<AuthBase>(
       create: (context) => Auth(),
       child: MaterialApp(
         title: "Time tracker",
-        theme: ThemeData(primarySwatch: Colors.purple),
-        home: LandingPage(
-        ),
+        theme: ThemeData(primarySwatch: Colors.indigo),
+        home: LandingPage(),
       ),
     );
   }

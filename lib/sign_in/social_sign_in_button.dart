@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:time_tracker_flutter_course/common_wigdet/custom_elevated_button.dart';
+import 'package:time_tracker_flutter_course/common_wigdet/custom_rasied_button.dart';
 
-class SocicalSignInButton extends CustomElevatedButton {
+class SocicalSignInButton extends CustomRasiedButton {
   SocicalSignInButton({
     @required text,
     @required imageURL,

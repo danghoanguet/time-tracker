@@ -1,12 +1,12 @@
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/show_alert_dialog.dart';
+import 'package:time_tracker_flutter_course/services/auth.dart';
 import 'services/auth_provider.dart';
 
 class HomePage extends StatelessWidget {
-
   Future<void> _signOut(BuildContext context) async {
-    final auth = AuthProvider.of(context);
+    final auth = Provider.of<AuthBase>(context, listen: false);
     try {
       await auth.signOut();
     } catch (e) {
@@ -15,13 +15,14 @@ class HomePage extends StatelessWidget {
   }
 
   Future<void> _confirmSignOut(BuildContext context) async {
-    final didRequestSignOut = await showAlertDialog(
-       context, title: 'Logout', content: 'You are about to sign out. Are you sure?',
-        defaultActionText: 'Sign out',cancelActionText: 'Cancel');
-    if(didRequestSignOut == true) {
+    final didRequestSignOut = await showAlertDialog(context,
+        title: 'Logout',
+        content: 'You are about to sign out. Are you sure?',
+        defaultActionText: 'Sign out',
+        cancelActionText: 'Cancel');
+    if (didRequestSignOut == true) {
       _signOut(context);
-    }
-    else {
+    } else {
       // dismiss alter dialog back to previous context
     }
   }
@@ -34,34 +35,30 @@ class HomePage extends StatelessWidget {
           'Home Page',
         ),
         actions: <Widget>[
-
           ElevatedButton(
             child: Text(
               'Logout',
               style: TextStyle(fontSize: 18, color: Colors.white),
             ),
-            onPressed:() => _confirmSignOut(context),
+            onPressed: () => _confirmSignOut(context),
           )
         ],
       ),
-      body: Container(
-
-      ),
-      bottomNavigationBar:
-      BottomNavigationBar(
-          items: [
+      body: Container(),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label:'Home',
+            label: 'Home',
           ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_box),
-              label:'Profile',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.logout),
-              label:'Logout',
-            )
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_box),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.logout),
+            label: 'Logout',
+          )
         ],
       ),
     );

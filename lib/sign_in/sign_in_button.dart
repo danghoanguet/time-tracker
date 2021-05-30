@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:time_tracker_flutter_course/common_wigdet/custom_elevated_button.dart';
+import 'package:time_tracker_flutter_course/common_wigdet/custom_rasied_button.dart';
 
-class SignInButton extends CustomElevatedButton {
+class SignInButton extends CustomRasiedButton {
   SignInButton({
     String text,
     Color color,
