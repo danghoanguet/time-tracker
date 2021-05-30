@@ -22,9 +22,7 @@ class HomePage extends StatelessWidget {
         cancelActionText: 'Cancel');
     if (didRequestSignOut == true) {
       _signOut(context);
-    } else {
-      // dismiss alter dialog back to previous context
-    }
+    } else {}
   }
 
   @override
