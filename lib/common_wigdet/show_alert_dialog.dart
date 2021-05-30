@@ -19,23 +19,6 @@ Future<bool> showAlertDialog(
           Future.delayed(Duration(seconds: 3), () {
             Navigator.of(context).pop(true);
           });
-          return AlertDialog(
-            title: Text(title),
-            content: Text(content),
-            actions: [
-              if (cancelActionText != null)
-                TextButton(
-                    onPressed: () => Navigator.of(context).pop(false),
-                    child: Text(
-                      cancelActionText,
-                    )),
-              TextButton(
-                  onPressed: () => Navigator.of(context).pop(true),
-                  child: Text(
-                    defaultActionText,
-                  )),
-            ],
-          );
         }
         return AlertDialog(
           title: Text(title),
@@ -58,12 +41,13 @@ Future<bool> showAlertDialog(
     );
   } else {
     return showCupertinoDialog(
-      context: context,
-      builder: (context) {
-        if (autoDismiss) {
-          Future.delayed(Duration(seconds: 3), () {
-            Navigator.of(context).pop(true);
-          });
+        context: context,
+        builder: (context) {
+          if (autoDismiss) {
+            Future.delayed(Duration(seconds: 3), () {
+              Navigator.of(context).pop(true);
+            });
+          }
           return AlertDialog(
             title: Text(title),
             content: Text(content),
@@ -81,25 +65,6 @@ Future<bool> showAlertDialog(
                   )),
             ],
           );
-        }
-        return AlertDialog(
-          title: Text(title),
-          content: Text(content),
-          actions: [
-            if (cancelActionText != null)
-              CupertinoDialogAction(
-                  onPressed: () => Navigator.of(context).pop(false),
-                  child: Text(
-                    cancelActionText,
-                  )),
-            CupertinoDialogAction(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: Text(
-                  defaultActionText,
-                )),
-          ],
-        );
-      },
-    );
+        });
   }
 }
