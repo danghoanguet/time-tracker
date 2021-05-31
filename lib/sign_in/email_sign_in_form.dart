@@ -5,7 +5,6 @@ import 'package:time_tracker_flutter_course/common_wigdet/formSubmitButton.dart'
 import 'package:time_tracker_flutter_course/common_wigdet/show_alert_dialog.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/show_exception_alert_diaglog.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
-import 'package:time_tracker_flutter_course/services/auth_provider.dart';
 import 'package:time_tracker_flutter_course/sign_in/validators.dart';
 
 enum EmailSignInFormType { signIn, register }
