@@ -1,10 +1,9 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-
 import 'package:time_tracker_flutter_course/services/auth.dart';
 
+// this class provider services to SigInPage such as Auth and State
 class SignInBloc {
   final StreamController<bool> _isLoadingController = StreamController<bool>();
   final AuthBase auth;
@@ -22,11 +21,11 @@ class SignInBloc {
   Future<User> _signIn(Future<User> Function() signInMethod) async {
     try {
       _setIsLoading(true);
-      return await signInMethod();
+      return await signInMethod(); // signInMethod is a fuction return Future<User> pass as parameter
     } catch (e) {
+      _setIsLoading(
+          false); // if sign in fail setIsLoading is false, if sucess move to HomePage
       rethrow;
-    } finally {
-      _setIsLoading(false);
     }
   }
 

@@ -9,12 +9,14 @@ import 'package:time_tracker_flutter_course/sign_in/validators.dart';
 
 enum EmailSignInFormType { signIn, register }
 
-class EmailSignInForm extends StatefulWidget with EmailAndPasswordValidator {
+class EmailSignInFormStateful extends StatefulWidget
+    with EmailAndPasswordValidator {
   @override
-  _EmailSignInFormState createState() => _EmailSignInFormState();
+  _EmailSignInFormStatefulState createState() =>
+      _EmailSignInFormStatefulState();
 }
 
-class _EmailSignInFormState extends State<EmailSignInForm> {
+class _EmailSignInFormStatefulState extends State<EmailSignInFormStateful> {
   EmailSignInFormType _formType = EmailSignInFormType.signIn;
 
   final TextEditingController _emailController = TextEditingController();
@@ -40,7 +42,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
     _passwordController.clear();
   }
 
-  void _submit() async {
+  Future<void> _submit() async {
     setState(() {
       isSubmitted = true;
       isLoading = true;
@@ -54,7 +56,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       }
       final auth = Provider.of<AuthBase>(context, listen: false);
       if (_formType == EmailSignInFormType.signIn) {
-        await auth.signInWithEmailAndPassword(email, _passwordController.text);
+        await auth.signInWithEmailAndPassword(email, _password);
         await showAlertDialog(context,
             title: "Sign In Succes",
             content: "You are going to Home in 3 seconds",
@@ -71,7 +73,7 @@ class _EmailSignInFormState extends State<EmailSignInForm> {
       }
       Navigator.of(context).pop();
     } on FirebaseAuthException catch (e) {
-      showExceptionAlertDiaglog(
+      showExceptionAlertDialog(
         context,
         title: 'SIGN IN FAIL',
         exception: e,

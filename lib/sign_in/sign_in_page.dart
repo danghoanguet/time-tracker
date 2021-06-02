@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/show_exception_alert_diaglog.dart';
@@ -14,8 +13,9 @@ class SignInPage extends StatelessWidget {
   final SignInBloc signInBloc;
 
   static Widget create(BuildContext context) {
+    final auth = Provider.of<AuthBase>(context, listen: false);
     return Provider<SignInBloc>(
-      create: (_) => SignInBloc(auth: Auth()),
+      create: (_) => SignInBloc(auth: auth),
       dispose: (_, signInBloc) => signInBloc.dispose(),
       child: Consumer<SignInBloc>(
           builder: (_, signInBloc, __) => SignInPage(signInBloc: signInBloc)),
@@ -23,11 +23,11 @@ class SignInPage extends StatelessWidget {
   }
 
   void _showSignInError(BuildContext context, Exception exception) {
-    if (exception is FirebaseAuthException &&
-        exception.code == 'ERROR_ABORTED BY USER') {
-      return;
-    }
-    showExceptionAlertDiaglog(context,
+    // if (exception is FirebaseAuthException &&
+    //     exception.code == 'ERROR_ABORTED BY USER') {
+    //   return;
+    // } else
+    showExceptionAlertDialog(context,
         title: "Sign in failed", exception: exception);
   }
 
