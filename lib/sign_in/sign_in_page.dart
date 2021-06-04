@@ -3,38 +3,66 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/show_exception_alert_diaglog.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
-import 'package:time_tracker_flutter_course/sign_in/sign_in_bloc.dart';
+//import 'package:time_tracker_flutter_course/sign_in/sign_in_bloc.dart';
 import 'package:time_tracker_flutter_course/sign_in/sign_in_button.dart';
 import 'package:time_tracker_flutter_course/sign_in/email_sign_in_page.dart';
+import 'package:time_tracker_flutter_course/sign_in/sign_in_manager.dart';
 import 'package:time_tracker_flutter_course/sign_in/social_sign_in_button.dart';
 
 class SignInPage extends StatelessWidget {
-  const SignInPage({Key key, @required this.signInBloc}) : super(key: key);
+  const SignInPage(
+      {Key key, @required this.signInManager, @required this.isLoading})
+      : super(key: key);
 
-  final SignInBloc signInBloc;
+  final SignInManager signInManager;
+  final bool isLoading;
 
   static Widget create(BuildContext context) {
     final auth = Provider.of<AuthBase>(context, listen: false);
-    return Provider<SignInBloc>(
-      create: (_) => SignInBloc(auth: auth),
-      dispose: (_, signInBloc) => signInBloc.dispose(),
-      child: Consumer<SignInBloc>(
-          builder: (_, signInBloc, __) => SignInPage(signInBloc: signInBloc)),
+    return ChangeNotifierProvider<ValueNotifier<bool>>(
+      create: (_) => ValueNotifier<bool>(false),
+      child: Consumer<ValueNotifier<bool>>(
+        // This Consumer gives SignInBloc Constructor ValueNotifier<bool>
+        builder: (_, isLoading, __) => Provider<SignInManager>(
+          // this builder call every time the ValueNotifier<bool> change
+          // Provide SignInManager to SignInPage
+          create: (_) => SignInManager(auth: auth, isLoading: isLoading),
+          // dispose: (_, signInBloc) => signInBloc.dispose(), // use for bloc + StreamBuilder
+          child: Consumer<SignInManager>(
+              //This Consumer gives SignInPage Constructor SignInManager
+              builder: (_, signInManager, __) => SignInPage(
+                    signInManager: signInManager,
+                    isLoading: isLoading.value,
+                  )),
+        ),
+      ),
     );
   }
+
+  // this is for using bloc + streamBuilder
+  // static Widget create(BuildContext context) {
+  //   final auth = Provider.of<AuthBase>(context, listen: false);
+  //   return Provider<SignInBloc>(
+  //     create: (_) => SignInBloc(auth: auth),
+  //     dispose: (_, signInBloc) => signInBloc.dispose(),
+  //     child: Consumer<SignInBloc>(
+  //         builder: (_, signInBloc,__) => SignInPage(signInBloc: signInBloc)),
+  //   );
+  // }
 
   void _showSignInError(BuildContext context, Exception exception) {
     if (exception is FirebaseAuthException &&
         exception.code == 'ERROR_ABORTED BY USER') {
       return;
-    } else
+    } else {
       showExceptionAlertDialog(context,
           title: "Sign in failed", exception: exception);
+    }
   }
 
   Future<void> _signInAnonymously(BuildContext context) async {
     try {
-      await signInBloc.signInAnonymously();
+      await signInManager.signInAnonymously();
     } on Exception catch (e) {
       _showSignInError(context, e);
     }
@@ -42,7 +70,7 @@ class SignInPage extends StatelessWidget {
 
   Future<void> _signInWithGoogle(BuildContext context) async {
     try {
-      await signInBloc.signInWithGoogle();
+      await signInManager.signInWithGoogle();
     } on Exception catch (e) {
       _showSignInError(context, e);
     }
@@ -50,7 +78,7 @@ class SignInPage extends StatelessWidget {
 
   Future<void> _signInWithFacebook(BuildContext context) async {
     try {
-      await signInBloc.signInWithFacebook();
+      await signInManager.signInWithFacebook();
     } on Exception catch (e) {
       _showSignInError(context, e);
     }
@@ -76,17 +104,19 @@ class SignInPage extends StatelessWidget {
             fontWeight: FontWeight.bold),
         elevation: 2.0,
       ),
-      body: StreamBuilder<bool>(
-          stream: signInBloc.isLoadingStream,
-          initialData: false,
-          builder: (context, snapshoot) {
-            return SingleChildScrollView(
-                child: _buildContent(context, snapshoot.data));
-          }),
+      body: _buildContent(context),
+      // This for using bloc + StreamBuilder
+      // body: StreamBuilder<bool>(
+      //     stream: signInBloc.isLoadingStream,
+      //     initialData: false,
+      //     builder: (context, snapshoot) {
+      //       return SingleChildScrollView(
+      //           child: _buildContent(context, snapshoot.data));
+      //     }),
     );
   }
 
-  Widget _buildContent(BuildContext context, bool isLoading) {
+  Widget _buildContent(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(16),
       child: Column(
@@ -96,7 +126,7 @@ class SignInPage extends StatelessWidget {
           SizedBox(height: 100),
           SizedBox(
             height: 50,
-            child: _buildHeader(isLoading),
+            child: _buildHeader(),
           ),
           SizedBox(height: 100),
           SocicalSignInButton(
@@ -147,7 +177,7 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader(isLoading) {
+  Widget _buildHeader() {
     if (isLoading) {
       return Center(
         child: CircularProgressIndicator(),
