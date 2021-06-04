@@ -20,6 +20,24 @@ class EmailSignInBloc {
     _modelController.close();
   }
 
+  void updateEmail(String email) => updateWith(email: email);
+  void updatePassword(String password) => updateWith(password: password);
+  void updateFormType() {
+    final formType = _model.formType == EmailSignInFormType.signIn
+        ? EmailSignInFormType.register
+        : EmailSignInFormType.signIn;
+    updateWith(
+      // We still need to update email and password to '' because the 59 & 60 line
+      // just call the funcion to clear the value text so we cant see it but its still
+      // the remain email and password before toogle
+      email: '',
+      password: '',
+      formType: formType,
+      isloading: false,
+      isSubmitted: false,
+    );
+  }
+
   // When ever we call updateWith() method,
   //its will update model + update stream which will rebuild the EmailSignInFormBlocBased by using StreamBuilder in build() method
   void updateWith({
@@ -45,13 +63,6 @@ class EmailSignInBloc {
   Future<void> submit() async {
     updateWith(isloading: true, isSubmitted: true);
     try {
-      // String email;
-      // if (!_model.email.contains('@')) {
-      //   email = _model.email + '@gmail.com';
-      // } else {
-      //   email = _model.email;
-      // }
-      // final auth = Provider.of<AuthBase>(context, listen: false);
       if (_model.formType == EmailSignInFormType.signIn) {
         await auth.signInWithEmailAndPassword(_model.email, _model.password);
       } else {
