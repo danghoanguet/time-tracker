@@ -5,7 +5,19 @@ import 'package:time_tracker_flutter_course/common_wigdet/show_alert_dialog.dart
 import 'package:time_tracker_flutter_course/services/auth.dart';
 import 'package:time_tracker_flutter_course/services/database.dart';
 
-class JobsPage extends StatelessWidget {
+class JobsPage extends StatefulWidget {
+  @override
+  _JobsPageState createState() => _JobsPageState();
+}
+
+class _JobsPageState extends State<JobsPage> {
+  bool isCreating = false;
+
+  final TextEditingController _jobNameController = TextEditingController();
+  final TextEditingController _jobDetailsController = TextEditingController();
+  String get _jobName => _jobNameController.text;
+  String get _jobDetails => _jobDetailsController.text;
+
   Future<void> _signOut(BuildContext context) async {
     final auth = Provider.of<AuthBase>(context, listen: false);
     try {
@@ -27,13 +39,11 @@ class JobsPage extends StatelessWidget {
   }
 
   Future<void> _createJobs(BuildContext context) async {
-    // Navigator.of(context).push(MaterialPageRoute<void>(
-    //   fullscreenDialog: true,
-    //   builder: (context) => buildAddContent(),
-    // ));
-
+    String jobName = _jobName;
+    String jobDetail = _jobDetails;
+    print('job name: $jobName \n job detials: $jobDetail');
     final database = Provider.of<Database>(context, listen: false);
-    await database.creatJob({'name': 'LearingFlutter', 'time': 'Evening'});
+    await database.creatJob({'name': jobName, 'time': jobDetail});
   }
 
   @override
@@ -53,7 +63,7 @@ class JobsPage extends StatelessWidget {
           )
         ],
       ),
-      body: Container(),
+      body: isCreating ? buildContent() : Container(),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -72,7 +82,54 @@ class JobsPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => _createJobs(context),
+        onPressed: () => setState(() {
+          isCreating = true;
+        }),
+      ),
+    );
+  }
+
+  Widget buildContent() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Column(
+        children: [
+          TextField(
+            onChanged: (value) => setState(() {}),
+            controller: _jobNameController,
+            decoration: InputDecoration(
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.blueAccent,
+                  ),
+                ),
+                labelText: 'Enter job name',
+                labelStyle: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w600,
+                ),
+                errorText: _jobName.isEmpty ? 'Job name can not be empty' : ""),
+          ),
+          TextField(
+            onChanged: (value) => setState(() {}),
+            controller: _jobDetailsController,
+            decoration: InputDecoration(
+                labelText: 'Enter details',
+                labelStyle: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w600,
+                ),
+                errorText: _jobDetails.isEmpty ? 'Can not be empty' : ""),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          CustomRasiedButton(
+            child: Icon(Icons.add),
+            color: Colors.indigo,
+            onPressed: () => _createJobs(context),
+          )
+        ],
       ),
     );
   }
