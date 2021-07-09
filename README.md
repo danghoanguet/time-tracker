@@ -1,16 +1,8 @@
 # time_tracker_flutter_course
 
-A new Flutter application.
+I'm working on this project so far i just have finished sign in methods
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+![image](https://user-images.githubusercontent.com/65205345/124687777-c8186200-deff-11eb-9779-a6b67983e0be.png)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
