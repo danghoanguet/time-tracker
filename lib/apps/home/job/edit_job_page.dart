@@ -9,34 +9,43 @@ import 'package:time_tracker_flutter_course/common_wigdet/show_alert_dialog.dart
 import 'package:time_tracker_flutter_course/common_wigdet/show_exception_alert_diaglog.dart';
 import 'package:time_tracker_flutter_course/services/database.dart';
 
-class CreateJobPage extends StatefulWidget {
-  const CreateJobPage({
+class EditJobPage extends StatefulWidget {
+  const EditJobPage({
     Key key,
     @required this.database,
+    this.job,
   }) : super(key: key);
   final Database database;
+  final Job job;
 
-  static void show(BuildContext context) {
+  static void show(BuildContext context, Job job) {
     // this context is from JobPage so it has Provider Database
     final database = Provider.of<Database>(context, listen: false);
     Navigator.of(context).push(
       MaterialPageRoute(
-          builder: (context) => CreateJobPage(
-                database: database,
-              ),
+          builder: (context) => EditJobPage(database: database, job: job),
           fullscreenDialog: true),
     );
   }
 
   @override
-  _CreateJobPageState createState() => _CreateJobPageState();
+  _EditJobPageState createState() => _EditJobPageState();
 }
 
-class _CreateJobPageState extends State<CreateJobPage> {
+class _EditJobPageState extends State<EditJobPage> {
   // final TextEditingController _jobNameController = TextEditingController();
   // final TextEditingController _jobDetailsController = TextEditingController();
   // String get _jobName => _jobNameController.text;
   // String get _ratePerHour => _jobDetailsController.text;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.job != null) {
+      _name = widget.job.name;
+      _ratePerHour = widget.job.ratePerHour;
+    }
+  }
 
   String _name;
   int _ratePerHour;
@@ -60,7 +69,7 @@ class _CreateJobPageState extends State<CreateJobPage> {
       // this line is wrong since the context is from the CreateJobPage which is
       // child of Material widget and doesn't have Database provider above it
 
-      await widget.database.creatJob(job);
+      await widget.database.setJob(job);
     } on FirebaseException catch (e) {
       showExceptionAlertDialog(context,
           title: 'Operation failed', exception: e);
@@ -75,7 +84,7 @@ class _CreateJobPageState extends State<CreateJobPage> {
       try {
         final jobs = await widget.database.jobStream().first;
         final allJobNames = jobs.map((job) => job.name).toList();
-        if (allJobNames.contains(_name)) {
+        if (allJobNames.contains(_name) && widget.job == null) {
           await showAlertDialog(context,
               title: 'Name already used',
               content: 'Please choose a different name',
@@ -84,7 +93,8 @@ class _CreateJobPageState extends State<CreateJobPage> {
             isLoading = false;
           });
         } else {
-          final job = Job(name: _name, ratePerHour: _ratePerHour);
+          final id = widget.job?.id ?? documentIdFromCurrentDate();
+          final job = Job(name: _name, ratePerHour: _ratePerHour, id: id);
           await _createJobs(job);
           await showAlertDialog(context,
               title: 'Done',
@@ -105,7 +115,7 @@ class _CreateJobPageState extends State<CreateJobPage> {
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Create new job"),
+        title: Text(widget.job != null ? 'Edit Job' : "Create new job"),
         toolbarTextStyle: TextStyle(
             fontSize: 10,
             fontStyle: FontStyle.italic,
@@ -148,11 +158,13 @@ class _CreateJobPageState extends State<CreateJobPage> {
   List<Widget> _buildChildren() {
     return [
       TextFormField(
+        initialValue: _name,
         decoration: InputDecoration(labelText: 'Enter job name'),
         validator: (value) => value.isEmpty ? 'Job name can\'t be empty' : null,
         onSaved: (value) => _name = value,
       ),
       TextFormField(
+        initialValue: widget.job != null ? '$_ratePerHour' : '',
         keyboardType:
             TextInputType.numberWithOptions(signed: false, decimal: false),
         onSaved: (value) => _ratePerHour = int.tryParse(value) ?? 0,

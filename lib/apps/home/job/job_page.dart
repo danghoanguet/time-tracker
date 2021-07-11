@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:time_tracker_flutter_course/apps/home/job/create_job_page.dart';
+import 'package:time_tracker_flutter_course/apps/home/job/edit_job_page.dart';
 import 'package:time_tracker_flutter_course/apps/home/job/job_details.dart';
+import 'package:time_tracker_flutter_course/apps/home/job/job_list_title.dart';
 import 'package:time_tracker_flutter_course/apps/home/models/job.dart';
 
 import 'package:time_tracker_flutter_course/common_wigdet/show_alert_dialog.dart';
@@ -71,7 +72,7 @@ class _JobsPageState extends State<JobsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () => CreateJobPage.show(context),
+        onPressed: () => EditJobPage.show(context, null),
       ),
     );
   }
@@ -88,37 +89,43 @@ class _JobsPageState extends State<JobsPage> {
           }
           if (snapshot.hasData) {
             final jobs = snapshot.data;
-            final children = jobs.map((job) => Text(job.name)).toList();
-            return ListView.builder(
-              itemCount: children.length,
-              itemBuilder: (BuildContext context, int index) {
-                return GestureDetector(
-                  onTap: () =>
-                      JobPageDetails.show(context, children[index].data),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                    decoration: BoxDecoration(
-                      border: Border(
-                          bottom: BorderSide(color: Colors.black87, width: 1)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          '${children[index].data}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w600, fontSize: 20),
-                        ),
-                        Icon(
-                          Icons.arrow_right_alt,
-                          size: 25,
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            );
+            final children = jobs
+                .map((job) => JobListTitle(
+                      job: job,
+                      onTap: () => EditJobPage.show(context, job),
+                    ))
+                .toList();
+            return ListView(children: children);
+            // return ListView.builder(
+            //   itemCount: children.length,
+            //   itemBuilder: (BuildContext context, int index) {
+            //     return GestureDetector(
+            //       onTap: () =>
+            //           JobPageDetails.show(context, children[index].data),
+            //       child: Container(
+            //         padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+            //         decoration: BoxDecoration(
+            //           border: Border(
+            //               bottom: BorderSide(color: Colors.black87, width: 1)),
+            //         ),
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //           children: [
+            //             Text(
+            //               '${children[index].data}',
+            //               style: TextStyle(
+            //                   fontWeight: FontWeight.w600, fontSize: 20),
+            //             ),
+            //             Icon(
+            //               Icons.arrow_right_alt,
+            //               size: 25,
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //     );
+            //   },
+            // );
           }
           return Center(
             child: CircularProgressIndicator(),

@@ -1,39 +1,42 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:time_tracker_flutter_course/apps/home/job/edit_job_page.dart';
+import 'package:time_tracker_flutter_course/apps/home/models/job.dart';
 import 'package:time_tracker_flutter_course/services/database.dart';
 
 class JobPageDetails extends StatelessWidget {
-  final String jobName;
+  const JobPageDetails({Key key, this.job, this.database}) : super(key: key);
 
-  static void show(BuildContext context, String jobName) {
+  final Job job;
+  final Database database;
+
+  static void show(BuildContext context, Job job) {
     Navigator.of(context).push(
       MaterialPageRoute(
-          builder: (context) => JobPageDetails(jobName: jobName),
+          builder: (context) => JobPageDetails(job: job),
           fullscreenDialog: true),
     );
   }
 
-  const JobPageDetails({Key key, this.jobName}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(jobName),
+        title: Text(job.name),
         actions: <Widget>[
           ElevatedButton(
-            child: Text(
-              'Edit',
-              style: TextStyle(fontSize: 18, color: Colors.white),
-            ),
-            onPressed: () => print('editing'),
-          )
+              child: Text(
+                'Edit',
+                style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+              onPressed: () => EditJobPage.show(context, job))
         ],
       ),
       body: _buildContent(),
-      floatingActionButton:
-          FloatingActionButton(child: Icon(Icons.add), onPressed: () => {}),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add), onPressed: () => print('add new entry')),
     );
   }
 
