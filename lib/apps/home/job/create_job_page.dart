@@ -10,7 +10,10 @@ import 'package:time_tracker_flutter_course/common_wigdet/show_exception_alert_d
 import 'package:time_tracker_flutter_course/services/database.dart';
 
 class CreateJobPage extends StatefulWidget {
-  const CreateJobPage({Key key, @required this.database}) : super(key: key);
+  const CreateJobPage({
+    Key key,
+    @required this.database,
+  }) : super(key: key);
   final Database database;
 
   static void show(BuildContext context) {
@@ -18,7 +21,9 @@ class CreateJobPage extends StatefulWidget {
     final database = Provider.of<Database>(context, listen: false);
     Navigator.of(context).push(
       MaterialPageRoute(
-          builder: (context) => CreateJobPage(database: database),
+          builder: (context) => CreateJobPage(
+                database: database,
+              ),
           fullscreenDialog: true),
     );
   }
@@ -35,6 +40,7 @@ class _CreateJobPageState extends State<CreateJobPage> {
 
   String _name;
   int _ratePerHour;
+  bool isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -55,21 +61,41 @@ class _CreateJobPageState extends State<CreateJobPage> {
       // child of Material widget and doesn't have Database provider above it
 
       await widget.database.creatJob(job);
-      await showAlertDialog(context,
-          title: 'Done',
-          content: 'Create new job successful',
-          defaultActionText: 'Ok');
     } on FirebaseException catch (e) {
       showExceptionAlertDialog(context,
           title: 'Operation failed', exception: e);
     }
   }
 
-  void _submit() {
+  void _submit() async {
     if (_validateAndSaveForm()) {
-      final job = Job(name: _name, ratePerHour: _ratePerHour);
-      _createJobs(job);
-      // Navigator.of(context).pop();
+      setState(() {
+        isLoading = true;
+      });
+      try {
+        final jobs = await widget.database.jobStream().first;
+        final allJobNames = jobs.map((job) => job.name).toList();
+        if (allJobNames.contains(_name)) {
+          await showAlertDialog(context,
+              title: 'Name already used',
+              content: 'Please choose a different name',
+              defaultActionText: 'Ok');
+          setState(() {
+            isLoading = false;
+          });
+        } else {
+          final job = Job(name: _name, ratePerHour: _ratePerHour);
+          await _createJobs(job);
+          await showAlertDialog(context,
+              title: 'Done',
+              content: 'Create new job successful',
+              defaultActionText: 'Ok');
+          Navigator.of(context).pop();
+        }
+      } on FirebaseException catch (e) {
+        showExceptionAlertDialog(context,
+            title: 'Operation failed', exception: e);
+      }
     }
   }
 
@@ -94,23 +120,29 @@ class _CreateJobPageState extends State<CreateJobPage> {
               ))
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: _buildForm(),
-        ),
-      ),
+      body: !isLoading
+          ? SingleChildScrollView(
+              child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Card(
+                  child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: _buildForm(),
+              )),
+            ))
+          : Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 
   Widget _buildForm() {
     return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: _buildChildren(),
-      ),
-    );
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: _buildChildren(),
+        ));
   }
 
   List<Widget> _buildChildren() {
@@ -125,7 +157,7 @@ class _CreateJobPageState extends State<CreateJobPage> {
             TextInputType.numberWithOptions(signed: false, decimal: false),
         onSaved: (value) => _ratePerHour = int.tryParse(value) ?? 0,
         decoration: InputDecoration(labelText: 'Enter rate per hour'),
-      )
+      ),
     ];
   }
 

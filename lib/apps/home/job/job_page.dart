@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/apps/home/job/create_job_page.dart';
+import 'package:time_tracker_flutter_course/apps/home/job/job_details.dart';
 import 'package:time_tracker_flutter_course/apps/home/models/job.dart';
 
 import 'package:time_tracker_flutter_course/common_wigdet/show_alert_dialog.dart';
@@ -92,7 +93,8 @@ class _JobsPageState extends State<JobsPage> {
               itemCount: children.length,
               itemBuilder: (BuildContext context, int index) {
                 return GestureDetector(
-                  onTap: () => print(children[index].data),
+                  onTap: () =>
+                      JobPageDetails.show(context, children[index].data),
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                     decoration: BoxDecoration(
