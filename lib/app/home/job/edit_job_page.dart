@@ -3,8 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:time_tracker_flutter_course/apps/home/models/job.dart';
-import 'package:time_tracker_flutter_course/common_wigdet/custom_rasied_button.dart';
+import 'package:time_tracker_flutter_course/app/home/job_entries/job_entries_page.dart';
+import 'package:time_tracker_flutter_course/app/home/models/job.dart';
+
 import 'package:time_tracker_flutter_course/common_wigdet/show_alert_dialog.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/show_exception_alert_diaglog.dart';
 import 'package:time_tracker_flutter_course/services/database.dart';
@@ -18,9 +19,8 @@ class EditJobPage extends StatefulWidget {
   final Database database;
   final Job job;
 
-  static void show(BuildContext context, Job job) {
+  static void show(BuildContext context, Database database, Job job) {
     // this context is from JobPage so it has Provider Database
-    final database = Provider.of<Database>(context, listen: false);
     Navigator.of(context).push(
       MaterialPageRoute(
           builder: (context) => EditJobPage(database: database, job: job),
@@ -82,7 +82,7 @@ class _EditJobPageState extends State<EditJobPage> {
         isLoading = true;
       });
       try {
-        final jobs = await widget.database.jobStream().first;
+        final jobs = await widget.database.jobsStream().first;
         final allJobNames = jobs.map((job) => job.name).toList();
         if (allJobNames.contains(_name) && widget.job == null) {
           await showAlertDialog(context,
@@ -98,9 +98,14 @@ class _EditJobPageState extends State<EditJobPage> {
           await _createJobs(job);
           await showAlertDialog(context,
               title: 'Done',
-              content: 'Create new job successful',
+              content: widget.job == null
+                  ? 'Create new job successful'
+                  : 'Edit job successful',
               defaultActionText: 'Ok');
-          Navigator.of(context).pop();
+
+          Navigator.of(context)
+              .pop(); // exit the edit_job_page back to job_entries_page
+          // Navigator.of(context).pop(); // exit the job_entries_page back to job_page
         }
       } on FirebaseException catch (e) {
         showExceptionAlertDialog(context,
@@ -159,7 +164,8 @@ class _EditJobPageState extends State<EditJobPage> {
     return [
       TextFormField(
         initialValue: _name,
-        decoration: InputDecoration(labelText: 'Enter job name'),
+        decoration: InputDecoration(
+            labelText: 'Enter job name', labelStyle: TextStyle(fontSize: 30)),
         validator: (value) => value.isEmpty ? 'Job name can\'t be empty' : null,
         onSaved: (value) => _name = value,
       ),
@@ -168,7 +174,9 @@ class _EditJobPageState extends State<EditJobPage> {
         keyboardType:
             TextInputType.numberWithOptions(signed: false, decimal: false),
         onSaved: (value) => _ratePerHour = int.tryParse(value) ?? 0,
-        decoration: InputDecoration(labelText: 'Enter rate per hour'),
+        decoration: InputDecoration(
+            labelText: 'Enter rate per hour',
+            labelStyle: TextStyle(fontSize: 30)),
       ),
     ];
   }

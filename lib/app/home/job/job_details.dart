@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:time_tracker_flutter_course/apps/home/job/edit_job_page.dart';
-import 'package:time_tracker_flutter_course/apps/home/models/job.dart';
+
+import 'package:time_tracker_flutter_course/app/home/job/edit_job_page.dart';
+import 'package:time_tracker_flutter_course/app/home/models/job.dart';
 import 'package:time_tracker_flutter_course/services/database.dart';
 
 class JobPageDetails extends StatelessWidget {
@@ -31,7 +31,7 @@ class JobPageDetails extends StatelessWidget {
                 'Edit',
                 style: TextStyle(fontSize: 18, color: Colors.white),
               ),
-              onPressed: () => EditJobPage.show(context, job))
+              onPressed: () => EditJobPage.show(context, database, job))
         ],
       ),
       body: _buildContent(),
