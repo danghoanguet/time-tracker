@@ -34,6 +34,7 @@ dependencies:
   flutter_login_facebook: 0.4.0+1
   provider: 5.0.0
   cloud_firestore: 0.14.3
+  intl: 0.16.1
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +58,8 @@ flutter:
   assets:
    - images/google-logo.png
    - images/facebook-logo.png
+   - images/keep_the_ocean_clean-wallpaper-5120x2880.jpg
+   - images/keep_the_ocean_clean-wallpaper-5120x2880.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
