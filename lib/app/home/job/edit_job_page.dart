@@ -21,7 +21,7 @@ class EditJobPage extends StatefulWidget {
 
   static void show(BuildContext context, Database database, Job job) {
     // this context is from JobPage so it has Provider Database
-    Navigator.of(context).push(
+    Navigator.of(context, rootNavigator: true).push(
       MaterialPageRoute(
           builder: (context) => EditJobPage(database: database, job: job),
           fullscreenDialog: true),
@@ -105,7 +105,9 @@ class _EditJobPageState extends State<EditJobPage> {
 
           Navigator.of(context)
               .pop(); // exit the edit_job_page back to job_entries_page
-          // Navigator.of(context).pop(); // exit the job_entries_page back to job_page
+          // Navigator.of(context)
+          //     .pop(); // exit the job_entries_page back to job_page
+          // JobEntriesPage.show(context, job);
         }
       } on FirebaseException catch (e) {
         showExceptionAlertDialog(context,

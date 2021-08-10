@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/app/home/job_entries/date_time_picker.dart';
 import 'package:time_tracker_flutter_course/app/home/job_entries/format.dart';
 import 'package:time_tracker_flutter_course/app/home/models/entry.dart';
@@ -18,11 +19,11 @@ class EntryPage extends StatefulWidget {
 
   static Future<void> show(
       {BuildContext context, Database database, Job job, Entry entry}) async {
-    await Navigator.of(context).push(
-      MaterialPageRoute(
+    await Navigator.of(context, rootNavigator: true).push(
+      CupertinoPageRoute(
         builder: (context) =>
             EntryPage(database: database, job: job, entry: entry),
-        fullscreenDialog: true,
+        fullscreenDialog: false,
       ),
     );
   }
@@ -88,7 +89,7 @@ class _EntryPageState extends State<EntryPage> {
         elevation: 2.0,
         title: Text(widget.job.name),
         actions: <Widget>[
-          FlatButton(
+          TextButton(
             child: Text(
               widget.entry != null ? 'Update' : 'Create',
               style: TextStyle(fontSize: 18.0, color: Colors.white),
@@ -138,8 +139,9 @@ class _EntryPageState extends State<EntryPage> {
   }
 
   Widget _buildDuration() {
+    final format = Provider.of<Format>(context, listen: false);
     final currentEntry = _entryFromState();
-    final durationFormatted = Format.hours(currentEntry.durationInHours);
+    final durationFormatted = format.hours(currentEntry.durationInHours);
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[

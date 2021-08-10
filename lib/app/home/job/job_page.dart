@@ -21,26 +21,6 @@ class JobsPage extends StatefulWidget {
 }
 
 class _JobsPageState extends State<JobsPage> {
-  Future<void> _signOut(BuildContext context) async {
-    final auth = Provider.of<AuthBase>(context, listen: false);
-    try {
-      await auth.signOut();
-    } catch (e) {
-      print(e.toString());
-    }
-  }
-
-  Future<void> _confirmSignOut(BuildContext context) async {
-    final didRequestSignOut = await showAlertDialog(context,
-        title: 'Logout',
-        content: 'You are about to sign out. Are you sure?',
-        defaultActionText: 'Sign out',
-        cancelActionText: 'Cancel');
-    if (didRequestSignOut == true) {
-      _signOut(context);
-    } else {}
-  }
-
   Future<void> deleteData(BuildContext context, Job job) async {
     try {
       final database = Provider.of<Database>(context, listen: false);
@@ -59,37 +39,29 @@ class _JobsPageState extends State<JobsPage> {
           'Jobs',
         ),
         actions: <Widget>[
-          ElevatedButton(
-            child: Text(
-              'Logout',
-              style: TextStyle(fontSize: 18, color: Colors.white),
-            ),
-            onPressed: () => _confirmSignOut(context),
-          )
+          IconButton(
+              onPressed: () => EditJobPage.show(
+                  context, Provider.of<Database>(context, listen: false), null),
+              icon: Icon(Icons.add)),
         ],
       ),
       body: _buildContent(context),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Jobs',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_box),
-            label: 'Entries',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.logout),
-            label: 'Profile',
-          )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => EditJobPage.show(
-            context, Provider.of<Database>(context, listen: false), null),
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.home),
+      //       label: 'Jobs',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.account_box),
+      //       label: 'Entries',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.logout),
+      //       label: 'Profile',
+      //     )
+      //   ],
+      // ),
     );
   }
 
