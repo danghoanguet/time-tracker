@@ -70,7 +70,7 @@ class _JobsPageState extends State<JobsPage> {
     return StreamBuilder<List<Job>>(
         stream: database.jobsStream(),
         builder: (context, snapshot) {
-          return ListItemBuilder<Job>(
+          return ListItemsBuilder<Job>(
               snapshot: snapshot,
               itemBuilder: (context, job) => Dismissible(
                     key: Key('job-${job.id}'), // this key must be unique

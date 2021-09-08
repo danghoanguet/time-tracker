@@ -22,9 +22,9 @@ class EditJobPage extends StatefulWidget {
   static void show(BuildContext context, Database database, Job job) {
     // this context is from JobPage so it has Provider Database
     Navigator.of(context, rootNavigator: true).push(
-      MaterialPageRoute(
+      CupertinoPageRoute(
           builder: (context) => EditJobPage(database: database, job: job),
-          fullscreenDialog: true),
+          fullscreenDialog: false),
     );
   }
 
