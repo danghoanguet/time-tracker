@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/app/email_sign_in/email_sign_in_bloc.dart';
+import 'package:time_tracker_flutter_course/app/email_sign_in/email_sign_in_bloc_behavior_subject.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/formSubmitButton.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/show_alert_dialog.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/show_exception_alert_diaglog.dart';
@@ -12,18 +13,18 @@ import 'email_sign_in_model.dart';
 class EmailSignInFormBlocBased extends StatefulWidget {
   EmailSignInFormBlocBased({Key key, this.emailSignInBloc});
 
-  final EmailSignInBloc emailSignInBloc;
+  final EmailSignInBlocBehaviorSubject emailSignInBloc;
 
   static Widget create(BuildContext context) {
     final auth = Provider.of<AuthBase>(context, listen: false);
-    return Provider<EmailSignInBloc>(
-        create: (_) => EmailSignInBloc(auth: auth),
+    return Provider<EmailSignInBlocBehaviorSubject>(
+        create: (_) => EmailSignInBlocBehaviorSubject(auth: auth),
         dispose: (
           _,
           emailSignInBloc,
         ) =>
             emailSignInBloc.dispose(),
-        child: Consumer<EmailSignInBloc>(
+        child: Consumer<EmailSignInBlocBehaviorSubject>(
           builder: (_, emailSignInBloc, __) => EmailSignInFormBlocBased(
             emailSignInBloc: emailSignInBloc,
           ),

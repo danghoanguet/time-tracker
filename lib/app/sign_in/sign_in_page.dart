@@ -104,7 +104,7 @@ class SignInPage extends StatelessWidget {
             fontWeight: FontWeight.bold),
         elevation: 2.0,
       ),
-      body: _buildContent(context),
+      body: SingleChildScrollView(child: _buildContent(context)),
       // This for using bloc + StreamBuilder
       // body: StreamBuilder<bool>(
       //     stream: signInBloc.isLoadingStream,
