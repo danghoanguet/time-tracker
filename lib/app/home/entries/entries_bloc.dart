@@ -23,6 +23,9 @@ class EntriesBloc {
         _entriesJobsCombiner,
       );
 
+  // This method define how we want data combine and how to combine it RxDart will do it for us
+  //we will have a list [entries] number of EntryJob
+  //and each item is combined by entry and a job which match the job.id
   static List<EntryJob> _entriesJobsCombiner(
       List<Entry> entries, List<Job> jobs) {
     return entries.map((entry) {
@@ -38,6 +41,7 @@ class EntriesBloc {
   Stream<List<EntriesListTileModel>> get entriesTileModelStream =>
       _allEntriesStream.map(_createModels);
 
+  // convert each EntryJob in allEntries into EntriesListTileModel
   List<EntriesListTileModel> _createModels(List<EntryJob> allEntries) {
     if (allEntries.isEmpty) {
       return [];
