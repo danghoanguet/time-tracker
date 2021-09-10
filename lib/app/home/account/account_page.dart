@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:time_tracker_flutter_course/common_wigdet/avatar.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/show_alert_dialog.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
 
@@ -28,6 +30,8 @@ class AccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<AuthBase>(context, listen: false);
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -43,7 +47,36 @@ class AccountPage extends StatelessWidget {
             onPressed: () => _confirmSignOut(context),
           )
         ],
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(130),
+          child: _buildUserInfo(auth.currentUser),
+        ),
       ),
+    );
+  }
+
+  Widget _buildUserInfo(User currentUser) {
+    return Column(
+      children: [
+        Avatar(
+          radius: 50,
+          photoUrl: currentUser.photoURL,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        if (currentUser.displayName != null)
+          Text(
+            currentUser.displayName,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
+          ),
+        SizedBox(
+          height: 10,
+        ),
+      ],
     );
   }
 }
