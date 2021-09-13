@@ -22,7 +22,7 @@ class SignInPage extends StatelessWidget {
     return ChangeNotifierProvider<ValueNotifier<bool>>(
       create: (_) => ValueNotifier<bool>(false),
       child: Consumer<ValueNotifier<bool>>(
-        // This Consumer gives SignInBloc Constructor ValueNotifier<bool>
+        // This Consumer gives SignInManager Constructor ValueNotifier<bool>
         builder: (_, isLoading, __) => Provider<SignInManager>(
           // this builder call every time the ValueNotifier<bool> change
           // Provide SignInManager to SignInPage

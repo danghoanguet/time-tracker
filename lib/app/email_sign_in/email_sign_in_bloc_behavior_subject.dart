@@ -53,7 +53,7 @@ class EmailSignInBlocBehaviorSubject {
     EmailSignInFormType formType,
   }) {
     // update model
-    _modelSubject.add(_model.copyWith(
+    _modelSubject.add(_model.copyWith( // or we can use _modelSubject.value = _model.copyWith()
       email: email,
       password: password,
       isSubmitted: isSubmitted,
