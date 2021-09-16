@@ -11,6 +11,7 @@ abstract class AuthBase {
   Future<User> signInWithFacebook();
   Future<User> signInWithGoogle();
   Future<void> signOut();
+  Stream<User> onUserChanges();
 }
 
 class Auth implements AuthBase {
@@ -18,6 +19,9 @@ class Auth implements AuthBase {
 
   @override
   Stream<User> onAuthStateChanges() => _firebaseAuth.authStateChanges();
+
+  @override
+  Stream<User> onUserChanges() => _firebaseAuth.userChanges();
 
   @override
   User get currentUser => _firebaseAuth.currentUser;

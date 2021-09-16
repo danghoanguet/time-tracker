@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/app/home/home_page.dart';
 import 'package:time_tracker_flutter_course/app/sign_in/sign_in_page.dart';
-import 'package:time_tracker_flutter_course/app/home/job/job_page.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
 import 'package:time_tracker_flutter_course/services/database.dart';
+import 'package:time_tracker_flutter_course/services/firebase_storage_service.dart';
 
 class LandingPage extends StatelessWidget {
   @override
@@ -19,8 +19,15 @@ class LandingPage extends StatelessWidget {
             if (user == null) {
               return SignInPage.create(context);
             }
-            return Provider<Database>(
-              create: (_) => FirestoreDatabase(uid: user.uid),
+            return MultiProvider(
+              providers: [
+                Provider<Database>(
+                  create: (_) => FirestoreDatabase(uid: user.uid),
+                ),
+                Provider<FirebaseStorageService>(
+                  create: (_) => FirebaseStorageService(uid: user.uid),
+                ),
+              ],
               child: HomePage(),
             );
           } else {

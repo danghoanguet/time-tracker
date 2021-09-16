@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:time_tracker_flutter_course/app/email_sign_in/email_sign_in_bloc.dart';
 import 'package:time_tracker_flutter_course/app/email_sign_in/email_sign_in_bloc_behavior_subject.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/formSubmitButton.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/show_alert_dialog.dart';

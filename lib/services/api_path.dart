@@ -3,6 +3,10 @@ class APIPath {
 
   static String jobs(String uid) => 'users/$uid/jobs';
 
+  static String avatar(String uid) => 'avatar/$uid';
+
+  static String userProfile(String uid) => 'users/$uid/profile/$uid';
+
   static String entry(String uid, String entryId) =>
       'users/$uid/entries/$entryId';
 

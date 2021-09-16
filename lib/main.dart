@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/app/home/job_entries/format.dart';
 import 'package:time_tracker_flutter_course/landing_page.dart';
 import 'package:time_tracker_flutter_course/services/auth.dart';
+import 'package:time_tracker_flutter_course/common_wigdet/image_picker_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,9 @@ class MyApp extends StatelessWidget {
         Provider<AuthBase>(create: (context) => Auth()),
         Provider<Format>(
           create: (context) => Format(),
+        ),
+        Provider<ImagePickerService>(
+          create: (context) => ImagePickerService(),
         )
       ],
       child: MaterialApp(

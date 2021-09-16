@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
+import 'package:time_tracker_flutter_course/app/home/models/avatar_reference.dart';
 import 'package:time_tracker_flutter_course/app/home/models/entry.dart';
 import 'package:time_tracker_flutter_course/app/home/models/job.dart';
+import 'package:time_tracker_flutter_course/app/home/models/user_profile.dart';
 import 'package:time_tracker_flutter_course/services/api_path.dart';
 import 'package:time_tracker_flutter_course/services/firestore_service.dart';
 
@@ -12,6 +15,8 @@ abstract class Database {
   Future<void> setEntry(Entry entry);
   Future<void> deleteEntry(Entry entry);
   Stream<List<Entry>> entriesStream({Job job});
+  Future<void> setUserProfile(UserProfile userProfile);
+  Stream<UserProfile> userProfileStream({@required User user});
 }
 
 String documentIdFromCurrentDate() => DateTime.now().toIso8601String();
@@ -21,6 +26,18 @@ class FirestoreDatabase implements Database {
   final String uid;
 
   final _service = FirestoreService.instance;
+
+  @override
+  Future<void> setUserProfile(UserProfile userProfile) => _service.setData(
+      data: userProfile.toMap(),
+      path: APIPath.userProfile(
+        uid,
+      ));
+  @override
+  Stream<UserProfile> userProfileStream({@required User user}) =>
+      _service.documentStream(
+          path: APIPath.userProfile(user.uid),
+          builder: (data, documentId) => UserProfile.fromMap(data, documentId));
 
   @override
   Future<void> setJob(Job job) => _service.setData(
@@ -73,4 +90,12 @@ class FirestoreDatabase implements Database {
         builder: (data, documentID) => Entry.fromMap(data, documentID),
         sort: (lhs, rhs) => rhs.start.compareTo(lhs.start),
       );
+
+  // Reads the current avatar download url
+  // Stream<AvatarReference> avatarReferenceStream() {
+  //   final path = APIPath.avatar(uid);
+  //   final reference = Firestore.instance.document(path);
+  //   final snapshots = reference.snapshots();
+  //   return snapshots.map((snapshot) => AvatarReference.fromMap(snapshot.data));
+  // }
 }

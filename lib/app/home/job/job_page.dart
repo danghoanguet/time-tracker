@@ -2,17 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/app/home/job/edit_job_page.dart';
-import 'package:time_tracker_flutter_course/app/home/job/empty_content.dart';
-
 import 'package:time_tracker_flutter_course/app/home/job/job_list_title.dart';
 import 'package:time_tracker_flutter_course/app/home/job/list_items_builder.dart';
 import 'package:time_tracker_flutter_course/app/home/job_entries/job_entries_page.dart';
 import 'package:time_tracker_flutter_course/app/home/models/job.dart';
-
-import 'package:time_tracker_flutter_course/common_wigdet/show_alert_dialog.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/show_exception_alert_diaglog.dart';
-
-import 'package:time_tracker_flutter_course/services/auth.dart';
 import 'package:time_tracker_flutter_course/services/database.dart';
 
 class JobsPage extends StatefulWidget {

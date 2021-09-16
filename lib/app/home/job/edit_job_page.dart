@@ -2,10 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
-import 'package:time_tracker_flutter_course/app/home/job_entries/job_entries_page.dart';
 import 'package:time_tracker_flutter_course/app/home/models/job.dart';
-
 import 'package:time_tracker_flutter_course/common_wigdet/show_alert_dialog.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/show_exception_alert_diaglog.dart';
 import 'package:time_tracker_flutter_course/services/database.dart';
@@ -140,12 +137,23 @@ class _EditJobPageState extends State<EditJobPage> {
       body: !isLoading
           ? SingleChildScrollView(
               child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Card(
+              padding: const EdgeInsets.fromLTRB(16.0, 50, 16.0, 16.0),
+              child: Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          blurRadius: 10.0,
+                          offset: Offset(2.0, 3.0),
+                        )
+                      ]),
                   child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: _buildForm(),
-              )),
+                    padding: const EdgeInsets.all(16.0),
+                    child: _buildForm(),
+                  )),
             ))
           : Center(
               child: CircularProgressIndicator(),
