@@ -26,14 +26,19 @@ class FirebaseStorageService {
     print('uploading to: $path');
     final storageReference = FirebaseStorage.instance.ref().child(path);
     final uploadTask = storageReference.putFile(
-        file, StorageMetadata(contentType: contentType));
+        file, SettableMetadata(contentType: contentType));
 
-    final snapshot = await uploadTask.onComplete;
+    final snapshot = await uploadTask.then((value) => value,
+        onError: (err) => {
+              print('upload error code: $err'),
+              throw err,
+            });
+    //  final snapshot = await uploadTask.whenComplete(() => {});
 
-    if (snapshot.error != null) {
-      print('upload error code: ${snapshot.error}');
-      throw snapshot.error;
-    }
+    // if (snapshot.error != null) {
+    //   print('upload error code: ${snapshot.error}');
+    //   throw snapshot.error;
+    // }
 
     // Url used to download file/image
     final downloadUrl = await snapshot.ref.getDownloadURL();
