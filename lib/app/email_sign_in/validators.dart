@@ -1,4 +1,3 @@
-
 abstract class StringValidator {
   bool isValid(String string);
 }
@@ -6,6 +5,7 @@ abstract class StringValidator {
 class NonEmptyStringValidator implements StringValidator {
   @override
   bool isValid(String string) {
+    if (string == null) return false;
     return string.isNotEmpty;
   }
 }
