@@ -36,7 +36,7 @@ class _EditNamePageState extends State<EditNamePage> {
   void _onSave() {
     _validateAndSaveForm();
     print(name);
-    widget.user.updateProfile(displayName: name);
+    widget.user.updateDisplayName(name);
     Navigator.of(context).pop();
   }
 

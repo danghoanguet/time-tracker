@@ -76,7 +76,9 @@ class _EmailSignInFormStatefulState extends State<EmailSignInFormStateful> {
     } on FirebaseAuthException catch (e) {
       showExceptionAlertDialog(
         context,
-        title: 'SIGN IN FAIL',
+        title: _formType == EmailSignInFormType.signIn
+            ? 'SIGN IN FAIL'
+            : 'REGISTER FAIL',
         exception: e,
       );
     } finally {

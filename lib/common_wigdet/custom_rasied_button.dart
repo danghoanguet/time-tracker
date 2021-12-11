@@ -17,15 +17,16 @@ class CustomRasiedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 50,
-        // ignore: deprecated_member_use
-        child: RaisedButton(
-          child: child,
-          disabledColor: color,
-          color: color,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(borderRadius))),
-          onPressed: onPressed,
-        ));
+      height: 50,
+      // ignore: deprecated_member_use
+      child: RaisedButton(
+        child: child,
+        disabledColor: color,
+        color: color,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(borderRadius))),
+        onPressed: onPressed,
+      ),
+    );
   }
 }

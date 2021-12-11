@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/app/home/account/edit_name_page.dart';
-import 'package:time_tracker_flutter_course/app/home/models/avatar_reference.dart';
 import 'package:time_tracker_flutter_course/app/home/models/user_profile.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/avatar.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/show_alert_dialog.dart';
@@ -11,7 +10,6 @@ import 'package:time_tracker_flutter_course/common_wigdet/show_exception_alert_d
 import 'package:time_tracker_flutter_course/services/auth.dart';
 import 'package:time_tracker_flutter_course/services/database.dart';
 import 'package:time_tracker_flutter_course/services/firebase_storage_service.dart';
-import 'package:time_tracker_flutter_course/services/firestore_service.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/image_picker_service.dart';
 
 class AccountPage extends StatelessWidget {
@@ -83,7 +81,7 @@ class AccountPage extends StatelessWidget {
                 ? user.uid.substring(0, 10)
                 : user.displayName,
             photoUrl: downloadUrl));
-        await user.updateProfile(photoURL: downloadUrl);
+        await user.updatePhotoURL(downloadUrl);
         // 4. (optional) delete local file as no longer needed
         await file.delete();
       } else
@@ -124,7 +122,7 @@ class AccountPage extends StatelessWidget {
         Avatar(
           onTap: () => _chooseAvatar(context, currentUser),
           radius: 50,
-          photoUrl: currentUser.photoURL,
+          photoUrl: currentUser.photoURL != null ? currentUser.photoURL : null,
         ),
         SizedBox(
           height: 8,

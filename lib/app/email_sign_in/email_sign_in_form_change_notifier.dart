@@ -72,7 +72,7 @@ class _EmailSignInFormChangeNotifierState
           content: "You are going to Home in 3 seconds",
           defaultActionText: "",
           autoDismiss: true);
-      Navigator.of(context).pop();
+      Navigator.of(context).pop(); // back to sign in
     } on FirebaseAuthException catch (e) {
       showExceptionAlertDialog(
         context,
