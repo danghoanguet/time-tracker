@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:time_tracker_flutter_course/app/email_sign_in/email_sign_in_model.dart';
+import 'package:time_tracker_flutter_course/app/email_sign_in/email_sign_in_bloc/email_sign_in_model.dart';
 
 import 'package:time_tracker_flutter_course/services/auth.dart';
 
@@ -10,11 +10,11 @@ class EmailSignInBlocBehaviorSubject {
   EmailSignInBlocBehaviorSubject({
     @required this.auth,
   });
+  final AuthBase auth;
 
   final _modelSubject = BehaviorSubject.seeded(EmailSignInModel());
   // final StreamController<EmailSignInModel> _modelController =
   //     StreamController<EmailSignInModel>();
-  final AuthBase auth;
 
   Stream<EmailSignInModel> get modelStream => _modelSubject.stream;
   EmailSignInModel get _model =>
@@ -53,7 +53,8 @@ class EmailSignInBlocBehaviorSubject {
     EmailSignInFormType formType,
   }) {
     // update model
-    _modelSubject.add(_model.copyWith( // or we can use _modelSubject.value = _model.copyWith()
+    _modelSubject.add(_model.copyWith(
+      // or we can use _modelSubject.value = _model.copyWith() = add value to stream
       email: email,
       password: password,
       isSubmitted: isSubmitted,

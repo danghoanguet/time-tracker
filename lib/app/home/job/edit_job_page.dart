@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:time_tracker_flutter_course/app/home/models/job.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/show_alert_dialog.dart';
 import 'package:time_tracker_flutter_course/common_wigdet/show_exception_alert_diaglog.dart';
@@ -127,7 +126,7 @@ class _EditJobPageState extends State<EditJobPage> {
         elevation: 2.0,
         actions: [
           TextButton(
-              onPressed: () => _submit(),
+              onPressed: () => isLoading ? null : _submit(),
               child: Text(
                 'Save',
                 style: TextStyle(fontSize: 18, color: Colors.white),

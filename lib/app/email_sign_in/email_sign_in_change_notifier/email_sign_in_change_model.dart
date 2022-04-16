@@ -19,7 +19,7 @@
 // USE CHANGENOTIFIER WITH MUTABLE OBJ
 
 import 'package:flutter/foundation.dart';
-import 'package:time_tracker_flutter_course/app/email_sign_in/email_sign_in_model.dart';
+import 'package:time_tracker_flutter_course/app/email_sign_in/email_sign_in_bloc/email_sign_in_model.dart';
 import 'package:time_tracker_flutter_course/app/email_sign_in/validators.dart';
 
 import 'package:time_tracker_flutter_course/services/auth.dart';

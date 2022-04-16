@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:time_tracker_flutter_course/app/home/job_entries/date_time_picker.dart';
 import 'package:time_tracker_flutter_course/app/home/job_entries/format.dart';
@@ -38,6 +37,7 @@ class _EntryPageState extends State<EntryPage> {
   DateTime _endDate;
   TimeOfDay _endTime;
   String _comment;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -70,6 +70,9 @@ class _EntryPageState extends State<EntryPage> {
 
   Future<void> _setEntryAndDismiss(BuildContext context) async {
     try {
+      setState(() {
+        _isLoading = true;
+      });
       final entry = _entryFromState();
       await widget.database.setEntry(entry);
       Navigator.of(context).pop();
@@ -79,6 +82,10 @@ class _EntryPageState extends State<EntryPage> {
         title: 'Operation failed',
         exception: e,
       );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -94,7 +101,11 @@ class _EntryPageState extends State<EntryPage> {
               widget.entry != null ? 'Update' : 'Create',
               style: TextStyle(fontSize: 18.0, color: Colors.white),
             ),
-            onPressed: () => _setEntryAndDismiss(context),
+            onPressed: _isLoading == true
+                ? () {
+                    print(_isLoading.toString());
+                  }
+                : () => _setEntryAndDismiss(context),
           )
         ],
       ),

@@ -91,31 +91,6 @@ class SignInPage extends StatelessWidget {
     ));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("My time tracker"),
-        toolbarTextStyle: TextStyle(
-            fontSize: 10,
-            fontStyle: FontStyle.italic,
-            fontWeight: FontWeight.bold),
-        elevation: 2.0,
-      ),
-      body: SingleChildScrollView(child: _buildContent(context)),
-      // This for using bloc + StreamBuilder
-      // body: StreamBuilder<bool>(
-      //     stream: signInBloc.isLoadingStream,
-      //     initialData: false,
-      //     builder: (context, snapshoot) {
-      //       return SingleChildScrollView(
-      //           child: _buildContent(context, snapshoot.data));
-      //     }),
-    );
-  }
-
   Widget _buildContent(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(16),
@@ -192,5 +167,30 @@ class SignInPage extends StatelessWidget {
             fontWeight: FontWeight.w800),
       );
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text("My time tracker"),
+        toolbarTextStyle: TextStyle(
+            fontSize: 10,
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.bold),
+        elevation: 2.0,
+      ),
+      body: SingleChildScrollView(child: _buildContent(context)),
+      // This for using bloc + StreamBuilder
+      // body: StreamBuilder<bool>(
+      //     stream: signInBloc.isLoadingStream,
+      //     initialData: false,
+      //     builder: (context, snapshoot) {
+      //       return SingleChildScrollView(
+      //           child: _buildContent(context, snapshoot.data));
+      //     }),
+    );
   }
 }

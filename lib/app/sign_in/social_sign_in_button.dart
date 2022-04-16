@@ -19,7 +19,7 @@ class SocicalSignInButton extends CustomRasiedButton {
                   text,
                   style: TextStyle(
                     color: textColor,
-                    fontSize: 25,
+                    fontSize: 20,
                     fontWeight: FontWeight.w400,
                   ),
                 ),
