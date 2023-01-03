@@ -24,6 +24,7 @@ class EmailSignInPage extends StatelessWidget {
           child: Card(
             child: EmailSignInFormBlocBased.create(context),
             //child: EmailSignInFormChangeNotifier.create(context),
+            //child: EmailSignInFormStateful(),
           ),
         ),
       ),

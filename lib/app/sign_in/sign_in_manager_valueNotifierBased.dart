@@ -13,10 +13,10 @@ class SignInManager {
   Future<User> _signIn(Future<User> Function() signInMethod) async {
     try {
       isLoading.value = true; // call notifyListeners(); also
-      return await signInMethod(); // signInMethod is a fuction return Future<User> pass as parameter
+      return await signInMethod(); // signInMethod is a function return Future<User> pass as parameter
     } catch (e) {
       isLoading.value = false; // call notifyListeners(); also
-      // if sign in fail setIsLoading is false, if sucess move to HomePage
+      // if sign in fail setIsLoading is false, if success move to HomePage
       rethrow;
     }
   }
